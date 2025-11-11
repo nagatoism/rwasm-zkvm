@@ -3886,6 +3886,34 @@ mod tests {
             x_value - (y_value + z_value)
         );
     }
+
+
+
+    #[test]
+    fn test_call_indirect() {
+        let ops = vec![
+            Opcode::I32Const(0.into()),
+            Opcode::I32Const(2.into()),
+            Opcode::TableGrow(0),
+            Opcode::I32Const(0.into()),
+            Opcode::I32Const(0.into()),
+            Opcode::I32Const(1.into()),
+            Opcode::TableInit(0),
+            Opcode::TableGet(0),
+            Opcode::I32Const(1.into()),
+            Opcode::CallIndirect(0),
+            Opcode::TableGet(0),
+            Opcode::Return,
+
+        ];
+        let elements = vec![5u32, 7u32];
+        let program = Program::from_instrs(ops).with_elements(elements);
+
+        let mut rt = Executor::new(program, SP1CoreOpts::default());
+
+        rt.run().unwrap();
+        println!("table:{:?}", rt.store.tables);
+    }
     #[test]
     fn test_i32constwith_add() {
         let sp_value: u32 = SP_START;
@@ -4896,6 +4924,7 @@ mod tests {
 
         rt.run().unwrap();
     }
+
 
     /// Boundary check: a 32‑bit load that starts inside the last page but
     /// crosses the end of the page must trap. This exercises the VM's
