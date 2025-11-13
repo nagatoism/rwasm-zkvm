@@ -22,7 +22,8 @@ use crate::{
     control_flow::CallChip,
     global::GlobalChip,
     memory::{MemoryLocalChip, NUM_LOCAL_MEMORY_ENTRIES_PER_ROW},
-    rwasm::RwasmAir, syscall::fat_op::TableInitChip,
+    rwasm::RwasmAir,
+    syscall::fat_op::TableInitChip,
 };
 
 /// The set of maximal shapes.
@@ -454,7 +455,7 @@ impl<F: PrimeField32> CoreShapeConfig<F> {
                             (MachineAir::<BabyBear>::name(&ProgramChip), 19),
                             (MachineAir::<BabyBear>::name(&ByteChip::default()), 16),
                             (MachineAir::<BabyBear>::name(&CallChip::default()), 16),
-                            (MachineAir::<BabyBear>::name(&TableInitChip::default()),22 ),
+                            (MachineAir::<BabyBear>::name(&TableInitChip::default()), 22),
                         ])
                         .collect::<Vec<_>>(),
                 )

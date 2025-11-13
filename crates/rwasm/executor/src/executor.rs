@@ -716,7 +716,6 @@ impl<'a> Executor<'a> {
         call_data: Option<TraceCallData>,
         fat_op: Option<FatOpEvent>,
     ) {
-        println!("emit cpu");
         if opcode.is_memory_instruction() {
             self.emit_cpu(
                 clk,
@@ -1470,7 +1469,6 @@ impl<'a> Executor<'a> {
         let public_values = removed_record.public_values;
         self.record.public_values = public_values;
         self.records.push(removed_record);
-        println!("after bump records:{:?}", self.records);
     }
     /// Execute up to `self.shard_batch_size` cycles, returning the events emitted and whether the
     /// program ended.
@@ -1676,7 +1674,6 @@ impl<'a> Executor<'a> {
             self.postprocess_syscall();
 
             let res = self.execute_cycle(res)?;
-            println!("self.record.cpuevent:{:?}", self.record.cpu_events);
             if res {
                 done = true;
                 break;
@@ -3887,8 +3884,6 @@ mod tests {
         );
     }
 
-
-
     #[test]
     fn test_call_indirect() {
         let ops = vec![
@@ -3904,7 +3899,6 @@ mod tests {
             Opcode::CallIndirect(0),
             Opcode::TableGet(0),
             Opcode::Return,
-
         ];
         let elements = vec![5u32, 7u32];
         let program = Program::from_instrs(ops).with_elements(elements);
@@ -3912,7 +3906,6 @@ mod tests {
         let mut rt = Executor::new(program, SP1CoreOpts::default());
 
         rt.run().unwrap();
-        println!("table:{:?}", rt.store.tables);
     }
     #[test]
     fn test_i32constwith_add() {
@@ -4924,7 +4917,6 @@ mod tests {
 
         rt.run().unwrap();
     }
-
 
     /// Boundary check: a 32‑bit load that starts inside the last page but
     /// crosses the end of the page must trap. This exercises the VM's
